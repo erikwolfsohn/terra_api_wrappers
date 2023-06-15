@@ -8,6 +8,7 @@ from firecloud import fiss
 import firecloud.api as fapi
 import os
 import io
+import argparse
 import pandas as pd
 import re
 import json
@@ -27,11 +28,37 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description='Run Terra workflows from command line')
+    
+    parser.add_argument(
+        '-w', '--workspace',
+        help='Workspace name',
+        default='Workspace_Name')
+    parser.add_argument(
+        '-n', '--namespace',
+        help='Workspace namespace',
+        default='Workspace_Namespace')
+    parser.add_argument(
+        '-b', '--bucket',
+        help='Workspace bucket',
+        default='s3://Workspace_Bucket')
+    parser.add_argument(
+        '-t', '--table',
+        help='Table name',
+        default='Table_Name')
+    
+    return parser.parse_args()
+
+
 def main():
-    ws_namespace = 
-    ws_name = 
-    ws_bucket = 
-    table_name = 
+    args = parse_args()
+
+    ws_namespace = args.workspace
+    ws_name = args.namespace
+    ws_bucket = args.bucket
+    table_name = args.table
   
     url = 'https://theiagen.notion.site/Docker-Image-and-Reference-Materials-for-SARS-CoV-2-Genomic-Characterization-98328c61f5cb4f77975f512b55d09108'
     options = Options()
