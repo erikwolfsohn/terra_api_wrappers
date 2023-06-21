@@ -33,6 +33,7 @@ def main():
     ws_name = args.workspace
     ws_bucket = args.bucket
     table_name = args.table
+    set_name = table_name + "_set"
     
     ws_vars = tf.updateWorkspaceVariables(ws_namespace, ws_name)
     
@@ -41,7 +42,7 @@ def main():
     run_data = tf.getRunContents(ws_namespace, ws_name, table_name, run_id)
 
     sub_results = tf.submitSampleWorkflow(
-        ws_namespace, ws_name, ws_namespace, "TheiaCoV_FASTA", "sample", run_data[0]
+        ws_namespace, ws_name, ws_namespace, "TheiaCoV_FASTA", table_name, run_data[0]
     )
     tf.waitForWorkflow(ws_namespace, ws_name, sub_results)
 
@@ -51,22 +52,22 @@ def main():
     tf.createSampleSet(ws_namespace, ws_name, table_name, run_data[0], run_id[0])
 
     sub_results = tf.submitSampleWorkflow(
-        ws_namespace, ws_name, ws_namespace, "NCBI_Scrub_SE", "sample", run_data[0]
+        ws_namespace, ws_name, ws_namespace, "NCBI_Scrub_SE", table_name, run_data[0]
     )
     tf.waitForWorkflow(ws_namespace, ws_name, sub_results)
 
     sub_results = tf.submitSampleWorkflow(
-        ws_namespace, ws_name, ws_namespace, "Mercury_SE_Prep", "sample", run_data[0]
+        ws_namespace, ws_name, ws_namespace, "Mercury_SE_Prep", table_name, run_data[0]
     )
     tf.waitForWorkflow(ws_namespace, ws_name, sub_results)
 
     sub_results = tf.submitSampleWorkflow(
-        ws_namespace, ws_name, ws_namespace, "Mercury_Batch", "sample_set", run_id
+        ws_namespace, ws_name, ws_namespace, "Mercury_Batch", set_name, run_id
     )
     tf.waitForWorkflow(ws_namespace, ws_name, sub_results)
 
     sub_results = tf.submitSampleWorkflow(
-        ws_namespace, ws_name, ws_namespace, "gisaid_cli3", "sample_set", run_id
+        ws_namespace, ws_name, ws_namespace, "gisaid_cli3", set_name, run_id
     )
 
 
