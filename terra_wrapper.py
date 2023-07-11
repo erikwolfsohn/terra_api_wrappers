@@ -194,6 +194,7 @@ class TerraWorkflows:
           service=Service(ChromeDriverManager().install()), options=options
       )
       driver.get(url)
+      WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.XPATH, "//*[@aria-label='Open']"))).click()
       notion_table = [
           my_elem.get_attribute("innerText")
           for my_elem in WebDriverWait(driver, 20).until(
